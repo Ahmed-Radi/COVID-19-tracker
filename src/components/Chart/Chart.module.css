@@ -1,1 +1,11 @@
 /** I should use a module to make style apply only in this page*/
+.container {
+    display: flex;
+    justify-content: center;
+    width: 85%;
+}
+@media (max-width: 770px) {
+    .container {
+        width: 100%;
+    }
+}

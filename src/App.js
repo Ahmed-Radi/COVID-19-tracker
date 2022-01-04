@@ -2,18 +2,32 @@ import React from 'react';
 
 import {Cards, Chart, CountryPicker} from './components'
 import styles from './App.module.css'
-import { fetchDate } from './api' // will search for index file automatic
+import { fetchData } from './api'; // will search for index file automatic
+import coronaImage from './images/image.png';
+
 class App extends React.Component {
+    state = {
+        data: {},
+        country: '',
+    }
     async componentDidMount() { // In the normal way we put "async" before the function name
-        const data = await fetchDate();
-        console.log(data)
+        const fetchedData = await fetchData();
+        this.setState({ data: fetchedData });
+    }
+
+    handleCountryChange = async (country) => {
+        const fetchedData = await fetchData(country);
+        this.setState({ data: fetchedData, country: country });
     }
     render() {
+        const { data, country } = this.state;
+
         return(
             <div className={styles.container}>
-                <Cards />
-                <CountryPicker />
-                <Chart />
+                <img className={styles.image} src={coronaImage} alt="COVID-19" />
+                <Cards data={data} />
+                <CountryPicker handleCountryChange={this.handleCountryChange}/>
+                <Chart data={data} country={country} />
             </div>
         );
     };
